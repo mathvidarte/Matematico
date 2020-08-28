@@ -2,8 +2,11 @@ package com.example.matematico;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,15 +27,18 @@ public class MainActivity extends AppCompatActivity {
     // Int
     private int puntajes = 0;
     private  int cont = 30;
+    private boolean btnPressed = false;
 
-    ArrayList <Pregunta> preguntas;
+     Pregunta preguntas;
 
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Referenciar
         operacion = findViewById(R.id.operacion);
         respuesta = findViewById(R.id.respuesta);
         responder = findViewById(R.id.responder);
@@ -41,17 +47,19 @@ public class MainActivity extends AppCompatActivity {
         reloj =  findViewById(R.id.reloj);
         restart = findViewById(R.id.restart);
 
-        preguntas = new ArrayList<>();
-        for (int i = 0; i < 1; i++) {
-            preguntas.add(new Pregunta());
-            preguntas.get(i).operaciones();
-            operacion.setText(""+preguntas.get(i).getQuestion());
-        }
 
+
+            preguntas = new Pregunta();
+            preguntas.operaciones();
+            operacion.setText(""+preguntas.getQuestion());
+
+
+            //Hilo donde manejo el cronometro
         new Thread(
                 () -> {
                     while (cont > 0) {
                         cont --;
+                        //que lo corra en el hilo principal
                         runOnUiThread(() -> {
                             reloj.setText(""+cont);
                             if (cont > 0) {
@@ -70,26 +78,54 @@ public class MainActivity extends AppCompatActivity {
 
         ).start();
 
+        /*Se pinta pero como que no me daja leer el onClickListener :c
+        responder.setOnTouchListener(
+                (view, event) -> {
+
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+
+                            responder.setBackgroundColor(Color.rgb(29,119,179));
+
+
+                            break;
+
+                        case MotionEvent.ACTION_UP:
+                            responder.setBackgroundColor( Color.rgb(22, 92, 138));
+                            break;
+                    }
+                    return true;
+                }
+        ); */
+
+
+
+        //Boton de responder
         responder.setOnClickListener(
                 (view) -> {
 
                     String respuestas = respuesta.getText().toString();
 
-                    for (int i = 0; i < preguntas.size(); i++) {
-                        if (preguntas.get(i).getAnswer().equals(respuestas)) {
+                 //Validación respuesta
+                        if (preguntas.getAnswer().equals(respuestas)) {
                             //Correcto
-                            preguntas.get(i).operaciones();
-                            operacion.setText(""+preguntas.get(i).getQuestion());
+                            preguntas.operaciones();
+                            operacion.setText(""+preguntas.getQuestion());
                             puntajes += 10;
                             numPuntaje.setText(""+puntajes);
-                            respuesta.setText(" ");
+
                         } else {
                             //Incorrecto
-                            
+                            if (puntajes > 0) {
+                                puntajes -= 10;
+                                numPuntaje.setText(""+puntajes);
+                            }
+
 
                         }
-                       // Log.e("cuenta", ""+preguntas.get(i).getAnswer());
-                    }
+
+
+                    respuesta.setText("");
 
 
 
@@ -97,6 +133,12 @@ public class MainActivity extends AppCompatActivity {
 
         );
 
+
+
+
+
+
+        //Boton Volver a intentar
         restart.setOnClickListener(
                 (view -> {
 
@@ -126,13 +168,12 @@ public class MainActivity extends AppCompatActivity {
 
                     ).start();
 
-                    String respuestas = respuesta.getText().toString();
 
-                    for (int i = 0; i < preguntas.size(); i++) {
 
-                            preguntas.get(i).operaciones();
-                            operacion.setText("" + preguntas.get(i).getQuestion());
-                        }
+                            preguntas.operaciones();
+                            operacion.setText("" + preguntas.getQuestion());
+
+
 
                     numPuntaje.setText(""+puntajes);
                     respuesta.setText(" ");

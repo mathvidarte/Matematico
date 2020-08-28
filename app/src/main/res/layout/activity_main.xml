@@ -50,15 +50,56 @@
         app:layout_constraintTop_toBottomOf="@+id/operacion" />
 
     <TextView
-        android:id="@+id/Puntaje"
-        android:layout_width="wrap_content"
+        android:id="@+id/puntaje"
+        android:layout_width="0dp"
         android:layout_height="19dp"
+        android:layout_marginStart="160dp"
         android:layout_marginTop="124dp"
-        android:text="Puntaje: 0"
+        android:text="Puntaje:"
         android:textColor="#535353"
         android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/numPuntaje"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/responder" />
+
+    <TextView
+        android:id="@+id/numPuntaje"
+        android:layout_width="wrap_content"
+        android:layout_height="19dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="125dp"
+        android:layout_marginEnd="160dp"
+        android:text="0"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toEndOf="@+id/puntaje"
+        app:layout_constraintTop_toBottomOf="@+id/responder" />
+
+    <TextView
+        android:id="@+id/reloj"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="318dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="36dp"
+        android:text="30"
+        android:textColor="#1B1818"
+        android:textSize="36sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/restart"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="36dp"
+        android:background="#0B5FAA"
+        android:text="Intentar de nuevo"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/responder" />
 
